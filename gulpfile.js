@@ -1,4 +1,4 @@
-//var jsonfile = require('jsonfile');
+var jsonfile = require('jsonfile');
 //var path = require('path');
 //var runSequence = require('run-sequence');
 var gulp = require('gulp');
@@ -6,22 +6,49 @@ var gulp = require('gulp');
 //var argv = require('yargs').argv;
 var mocha = require('gulp-mocha');
 var mochawesome=require('mochawesome');
+var mergeDirtreeAndMochawesome=require('merge-dirtree-and-mochawesome');
 //var handlebars = require('gulp-compile-handlebars');
 //var rename = require('gulp-rename');
 
 
-//function to merge dirTree json and testresult json
-/*var mochaMergeTreeWithTestReport = require('./MochaMergeTreeWithTestReportHelper/mochaMergeTreeWithTestReport.js');
+var testsRootPath='Tests';
+var mochAwesomeJsonFilePath='./mochawesome-report/mochawesome.json';
+var mergedDirtreeAndMochawesomeJsonFilePath='./mochawesome-report/mergedDirtreeAndMochawesome.json';
 
+gulp.task('runAll',function () {
 
-gulp.task('runTests',function () {
+    runSequence('mocha',
+              'mergeDirtreeAndMochawesome'
+              );
 
-    runSequence('protractorMocha',
-              'mochaDirTree',
-              'mergeMultipleMochawesomeJson',
-              'mochaDashboardReport');
+});
 
-});*/
+gulp.task('mocha', function () {
+    gulp.src(testsRootPath, { read: false })
+        .pipe(mocha({
+            recursive: '',
+            reporter: 'mochawesome'
+        }))
+        .on('error', function (e) {
+            this.emit('end');
+        })
+        .on('end', function () {
+            process.exit(0);
+        });
+});
+
+gulp.task('mergeDirtreeAndMochawesome',function(){
+
+    //var mochawesomeJson=jsonfile.readFileSync(mochAwesomeJsonFilePath);
+    var config={
+        dirTreeRootPath:testsRootPath,
+        mochAwesomeJsonPath:mochAwesomeJsonFilePath,
+        fileType:'js',
+    };
+    var mergedDirtreeAndMochawesomeJson=mergeDirtreeAndMochawesome(config);
+    jsonfile.writeFileSync(mergedDirtreeAndMochawesomeJsonFilePath, mergedDirtreeAndMochawesomeJson, { spaces: 2 });
+    
+});
 
 gulp.task('mochaDashboardReport', function () {
     
@@ -56,19 +83,7 @@ gulp.task('mochaDashboardReport', function () {
 });
 
 
-gulp.task('mocha', function () {
-    gulp.src('Tests', { read: false })
-        .pipe(mocha({
-            recursive: '',
-            reporter: 'mochawesome'
-        }))
-        .on('error', function (e) {
-            this.emit('end');
-        })
-        .on('end', function () {
-            process.exit(0);
-        });
-});
+
 
 
 //Only used if sharding test files is not used

@@ -19,6 +19,7 @@
   "dependencies": {
     "gulp": "^3.9.1",
     "gulp-mocha": "^5.0.0",
+    "merge-dirtree-and-mochawesome": "file:../addFoldersToMochaAwesome",
     "mochawesome": "^3.0.2"
   }
 }
