@@ -15,5 +15,10 @@
     "url": "https://github.com/mackanjansson/the-kitchen/issues"
   },
   "homepage": "https://github.com/mackanjansson/the-kitchen#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-mocha": "^5.0.0",
+    "mochawesome": "^3.0.2"
+  }
 }

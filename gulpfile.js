@@ -1,21 +1,17 @@
-var jsonfile = require('jsonfile');
-var path = require('path');
-
-var runSequence = require('run-sequence');
-
+//var jsonfile = require('jsonfile');
+//var path = require('path');
+//var runSequence = require('run-sequence');
 var gulp = require('gulp');
-var exit = require('gulp-exit');
-
-var argv = require('yargs').argv;
-
+//var exit = require('gulp-exit');
+//var argv = require('yargs').argv;
 var mocha = require('gulp-mocha');
-
-var handlebars = require('gulp-compile-handlebars');
-var rename = require('gulp-rename');
+var mochawesome=require('mochawesome');
+//var handlebars = require('gulp-compile-handlebars');
+//var rename = require('gulp-rename');
 
 
 //function to merge dirTree json and testresult json
-var mochaMergeTreeWithTestReport = require('./MochaMergeTreeWithTestReportHelper/mochaMergeTreeWithTestReport.js');
+/*var mochaMergeTreeWithTestReport = require('./MochaMergeTreeWithTestReportHelper/mochaMergeTreeWithTestReport.js');
 
 
 gulp.task('runTests',function () {
@@ -25,7 +21,7 @@ gulp.task('runTests',function () {
               'mergeMultipleMochawesomeJson',
               'mochaDashboardReport');
 
-});
+});*/
 
 gulp.task('mochaDashboardReport', function () {
     
@@ -61,7 +57,7 @@ gulp.task('mochaDashboardReport', function () {
 
 
 gulp.task('mocha', function () {
-    gulp.src('Web', { read: false })
+    gulp.src('Tests', { read: false })
         .pipe(mocha({
             recursive: '',
             reporter: 'mochawesome'
@@ -72,12 +68,11 @@ gulp.task('mocha', function () {
         .on('end', function () {
             process.exit(0);
         });
-  
 });
 
 
 //Only used if sharding test files is not used
-gulp.task('mochaMergeTreeWithTestReport', function () { //To merge json out of the mocha directory structure
+/*gulp.task('mochaMergeTreeWithTestReport', function () { //To merge json out of the mocha directory structure
 
     var treeFilePath = protractorMochaConfig.config.pathForMochaDirectoryTreeJSON;
     var treeJson = jsonfile.readFileSync(treeFilePath);
@@ -89,8 +84,8 @@ gulp.task('mochaMergeTreeWithTestReport', function () { //To merge json out of t
 
     jsonfile.writeFileSync(protractorMochaConfig.config.pathForMergedMochaJson, mergedJson, { spaces: 2 });
 
-});
-
+});*/
+/*
 gulp.task('mochaDirTree', function () { //To create json out of the mocha directory structure
 
     var tree = dirTree(protractorMochaConfig.config.pathMochaDirectory, ['.js']);
@@ -101,7 +96,7 @@ gulp.task('mochaDirTree', function () { //To create json out of the mocha direct
     jsonfile.writeFileSync(file, tree, { spaces: 2 }, function (err) {
         
     });
-});
+});*/
 
 
 
