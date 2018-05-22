@@ -1,7 +1,6 @@
 {
   "name": "the-kitchen",
   "version": "0.0.1",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,10 +9,11 @@
     "type": "git",
     "url": "git+https://github.com/mackanjansson/the-kitchen.git"
   },
-  "author": "",
+  "author": "Marcus Jansson",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mackanjansson/the-kitchen/issues"
   },
-  "homepage": "https://github.com/mackanjansson/the-kitchen#readme"
+  "homepage": "https://github.com/mackanjansson/the-kitchen#readme",
+  "description": ""
 }
