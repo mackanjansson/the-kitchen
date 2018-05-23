@@ -1,12 +1,14 @@
 var jsonfile = require('jsonfile');
+var fs=require('fs');
 //var path = require('path');
-//var runSequence = require('run-sequence');
+var runSequence = require('run-sequence');
 var gulp = require('gulp');
 //var exit = require('gulp-exit');
 //var argv = require('yargs').argv;
 var mocha = require('gulp-mocha');
 var mochawesome=require('mochawesome');
 var mergeDirtreeAndMochawesome=require('merge-dirtree-and-mochawesome');
+var dirTreeAndMochawesomeHtmlReport=require('dirtree-and-mochawesome-html-report');
 //var handlebars = require('gulp-compile-handlebars');
 //var rename = require('gulp-rename');
 
@@ -14,11 +16,13 @@ var mergeDirtreeAndMochawesome=require('merge-dirtree-and-mochawesome');
 var testsRootPath='Tests';
 var mochAwesomeJsonFilePath='./mochawesome-report/mochawesome.json';
 var mergedDirtreeAndMochawesomeJsonFilePath='./mochawesome-report/mergedDirtreeAndMochawesome.json';
+var mergedDirtreeAndMochawesomeHtmlFilePath='./mochawesome-report/mergedDirtreeAndMochawesome.html';
 
 gulp.task('runAll',function () {
 
     runSequence('mocha',
-              'mergeDirtreeAndMochawesome'
+              'mergeDirtreeAndMochawesome',
+              'mochaDashboardReport'
               );
 
 });
@@ -40,6 +44,8 @@ gulp.task('mocha', function () {
 gulp.task('mergeDirtreeAndMochawesome',function(){
 
     //var mochawesomeJson=jsonfile.readFileSync(mochAwesomeJsonFilePath);
+
+    
     var config={
         dirTreeRootPath:testsRootPath,
         mochAwesomeJsonPath:mochAwesomeJsonFilePath,
@@ -52,13 +58,19 @@ gulp.task('mergeDirtreeAndMochawesome',function(){
 
 gulp.task('mochaDashboardReport', function () {
     
-    var reportData = jsonfile.readFileSync(protractorMochaConfig.config.pathForMergedMochaJson);
+    var reportData = jsonfile.readFileSync(mergedDirtreeAndMochawesomeJsonFilePath);
+    var html=dirTreeAndMochawesomeHtmlReport(reportData);
+
+    //console.log(html);
+    fs.writeFileSync(mergedDirtreeAndMochawesomeHtmlFilePath,html);
+
+    /*
     options = {
         ignorePartials: true, //ignores the unknown footer2 partial in the handlebars template, defaults to false 
         partials: {
             footer: '<footer>the end</footer>'
         },
-        batch: ['./MochaDashboardReport/partials'],
+        batch: ['../dirtree-and-mochawesome-html-report/exampleHtmlReport/partials'],
         helpers: {
             environment: function () {
                 return env.environment;
@@ -76,10 +88,12 @@ gulp.task('mochaDashboardReport', function () {
             }
         }
     };
-    return gulp.src('MochaDashboardReport/report.handlebars')
+    return gulp.src('../dirtree-and-mochawesome-html-report/exampleHtmlReport/report.handlebars')
         .pipe(handlebars(reportData, options))
         .pipe(rename('mochaReport_' + env.environment + '.html'))
-        .pipe(gulp.dest('MochaDashboardReport'));
+        .pipe(gulp.dest('../dirtree-and-mochawesome-html-report/exampleHtmlReport'));
+
+        */
 });
 
 
